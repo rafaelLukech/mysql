@@ -1,3 +1,4 @@
+const { response } = require("express")
 const express = require("express")
 const exphbs = require("express-handlebars")
 const mysql = require("mysql")
@@ -19,7 +20,28 @@ app.use(express.urlencoded({
 app.use(express.json())
 
 //rotas
-app.get('/', (requisicao, resposta) =>{
+app.post("/register/save", (request, reponse) =>{
+    const { title, pageqty } = request.body
+
+    const query =`
+    INSERT INTO books (title, pageqty)
+    VALUES ('${books.title}', '${book.pageqty}')
+    
+    `
+    conn.query(query, (error) => {
+        if (error){
+            console.log(error)
+            return
+        }
+        response.redirect("/")
+    })
+})
+
+app.get("/register", (resquest, response) =>{
+    response.render("home")
+})
+
+app.get("/", (resquest, response) =>{
     resposta.render("home")
 })
 
