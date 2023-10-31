@@ -1,7 +1,7 @@
 const { response } = require("express")
 const express = require("express")
 const exphbs = require("express-handlebars")
-const mysql = require("mysql")
+const mysql = require("mysql2")
 
 const app = express()
 
@@ -17,10 +17,16 @@ app.use(express.urlencoded({
     extended: true
 }))
 
+//CRUD => CREATE, READ, UPDATE, DELETE
+
+app.use(express.urlencoded({
+    extended: true
+}))
+
 app.use(express.json())
 
 //rotas
-app.post("/register/save", (request, reponse) =>{
+app.post("/register/save", (request, response) =>{
     const { title, pageqty } = request.body
 
     const query =`
@@ -38,11 +44,23 @@ app.post("/register/save", (request, reponse) =>{
 })
 
 app.get("/register", (resquest, response) =>{
-    response.render("home")
+    response.render("register")
 })
 
 app.get("/", (resquest, response) =>{
-    resposta.render("home")
+    const sql = 'SELECT * FROM books'
+
+    conn.query(sql, (error, data) =>{
+        if (error) {
+            return console.log(error)
+        }
+
+        const books = data
+        console.log(books)
+        response.render("home", { books })
+    })
+
+   
 })
 
 //conexao com mysql
@@ -51,7 +69,7 @@ const conn = mysql.createConnection({
     user: "root",
     password:"root",
     database: "nodemysql",
-    port: 3307
+    port: 3306
 })
 conn.connect ((error) => {
 if (error) {
