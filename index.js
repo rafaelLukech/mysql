@@ -43,12 +43,29 @@ app.post("/register/save", (request, response) =>{
     })
 })
 
+app.get("/book/:id",(request, response) => {
+    const id = request.params.id
+
+    const sql = `
+    SELECT * FROM books
+    WHERE id=${id}
+    `
+    conn.query(sql, (error, data) => {
+        if (error) {
+            return console.log(error)
+        }
+        const book = data[0]
+
+        response.render("book" , { book } )
+    })
+})
+
 app.get("/register", (resquest, response) =>{
     response.render("register")
 })
 
 app.get("/", (resquest, response) =>{
-    const sql = 'SELECT * FROM books'
+    const sql = 'SELECT * FROM tablebooks'
 
     conn.query(sql, (error, data) =>{
         if (error) {

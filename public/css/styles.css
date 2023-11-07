@@ -22,7 +22,7 @@ header ul {
 }
 
 .book {
-    border: 10px;
+    border: 1px solid #ccc;
     width: 30rem;
     padding: 1rem;
     border-radius: 1rem;
