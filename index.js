@@ -1,4 +1,5 @@
 const { response } = require("express")
+const e = require("express")
 const express = require("express")
 const exphbs = require("express-handlebars")
 const mysql = require("mysql2")
@@ -26,12 +27,29 @@ app.use(express.urlencoded({
 app.use(express.json())
 
 //rotas
-app.post("/register/save", (request, response) =>{
+app.post("/edit/save", (request, reponse) => {
     const { title, pageqty } = request.body
 
+    const sql = `
+    UPDATE books
+    SET title = '${title}', pageqty = '${pageqty}'
+    WHERE id = %{id}
+
+    conn.query(sql, (error => {
+    
+    }
+
+    }))
+    `
+})
+
+
+app.post("/register/save", (request, response) => {
+    const { name, pg_qtd } = request.body
+
     const query =`
-    INSERT INTO books (title, pageqty)
-    VALUES ('${books.title}', '${book.pageqty}')
+    INSERT INTO tablebooks (name, pg_qtd)
+    VALUES ('${name}', '${pg_qtd}')
     
     `
     conn.query(query, (error) => {
@@ -41,13 +59,32 @@ app.post("/register/save", (request, response) =>{
         }
         response.redirect("/")
     })
+
+}
+
+    app.get("/edit/:id", request, response) => {
+        const id = request.parms.id
+    
+        const sql = `
+        SELECT = FROM books
+        WHERE id = ${id}
+        `
+        conn.query(sql, (error,data) => {
+            if (error) {
+                return console.log(error)
+            }
+    
+            const books = data [0]
+    
+            response.render('edit', { books })
+        })
 })
 
-app.get("/book/:id",(request, response) => {
+app.get("/tablebooks/:idtablebooks",(request, response) => {
     const id = request.params.id
 
     const sql = `
-    SELECT * FROM books
+    SELECT * FROM tablebooks
     WHERE id=${id}
     `
     conn.query(sql, (error, data) => {
@@ -56,7 +93,7 @@ app.get("/book/:id",(request, response) => {
         }
         const book = data[0]
 
-        response.render("book" , { book } )
+        response.render("tablebooks" , { book } )
     })
 })
 
@@ -79,6 +116,8 @@ app.get("/", (resquest, response) =>{
 
    
 })
+
+
 
 //conexao com mysql
 const conn = mysql.createConnection({
