@@ -7,8 +7,14 @@
     <p>Quantidade de páginas: CLA {{this.pageqty}}</p>
 
     <div class="buttons">
-        <a href="/books /{{this.id}}" class="mais"> Ver mais</a>
+        <a href="/books/{{this.id}}" class="mais"> Ver mais</a>
         <a href="/edit/{{this.id}}" class="editar"> Editar</a>
+        <form action="/delete/{{this.id}}" method="POST">
+        <input type="hidden" name="id" value="{{this.id}}">
+        <button class="excluir">Excluir</button>
+        </form>
+
+        
     </div>
 </div>
     {{/each}}

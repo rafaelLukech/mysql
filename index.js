@@ -1,4 +1,4 @@
-const { response } = require("express")
+const { response, query } = require("express")
 const e = require("express")
 const express = require("express")
 const exphbs = require("express-handlebars")
@@ -27,6 +27,24 @@ app.use(express.urlencoded({
 app.use(express.json())
 
 //rotas
+
+app.post("/delete/:id", (request, response) => {
+    const { id } = request.params
+
+    cont sql = `
+        DELETE FROM books
+        WHERE id = ${id}
+
+    `
+
+    conn.query(sql, (error) => {
+        if (error) {
+            return console.log(error)
+        }
+        response.redirect("/")
+    })
+})
+
 app.post("/edit/save", (request, reponse) => {
     const { title, pageqty } = request.body
 
